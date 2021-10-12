@@ -4,7 +4,9 @@ import com.hendisantika.entity.Fruit;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
@@ -28,4 +30,14 @@ public class FruitResource {
         return Fruit.listAll();
     }
 
+    @GET
+    @Path("/{id}")
+    public Fruit get(@PathParam Integer id) {
+        Fruit f = Fruit.findById(id);
+        if (f != null) {
+            return f;
+        } else {
+            throw new NotFoundException("Unknown fruit id : " + id);
+        }
+    }
 }
