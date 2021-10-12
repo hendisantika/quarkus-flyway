@@ -1,12 +1,14 @@
 package com.hendisantika.resources;
 
 import com.hendisantika.entity.Fruit;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
@@ -39,5 +41,13 @@ public class FruitResource {
         } else {
             throw new NotFoundException("Unknown fruit id : " + id);
         }
+    }
+
+    @POST
+    @Transactional
+    public Collection<Fruit> add(Fruit fruit) {
+        fruit.id = null; //ignore id
+        Fruit.persist(fruit);
+        return Fruit.listAll();
     }
 }
