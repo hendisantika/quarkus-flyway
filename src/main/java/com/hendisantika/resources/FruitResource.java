@@ -5,6 +5,7 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
@@ -65,5 +66,16 @@ public class FruitResource {
             throw new NotFoundException("Unknown fruit id : " + fruit.id);
         }
 
+    }
+
+    @DELETE
+    @Transactional
+    public void delete(Fruit fruit) {
+        Fruit f = Fruit.findById(fruit.id);
+        if (f != null) {
+            Fruit.deleteById(fruit.id);
+        } else {
+            throw new NotFoundException("Unknown fruit id : " + fruit.id);
+        }
     }
 }
