@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -49,5 +50,20 @@ public class FruitResource {
         fruit.id = null; //ignore id
         Fruit.persist(fruit);
         return Fruit.listAll();
+    }
+
+    @PUT
+    @Transactional
+    public Fruit update(Fruit fruit) {
+        Fruit fruitUpdated = Fruit.findById(fruit.id);
+        if (fruitUpdated != null) {
+            fruitUpdated.name = fruit.name;
+            fruitUpdated.description = fruit.description;
+            Fruit.persist(fruitUpdated);
+            return fruitUpdated;
+        } else {
+            throw new NotFoundException("Unknown fruit id : " + fruit.id);
+        }
+
     }
 }
