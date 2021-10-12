@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import java.util.List;
  * Time: 07.03
  */
 @Entity
+@Table(name = "product", schema = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

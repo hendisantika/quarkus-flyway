@@ -25,6 +25,7 @@ import java.util.Set;
  * Time: 07.05
  */
 @Entity
+@Table(name = "ShoppingCart", schema = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
