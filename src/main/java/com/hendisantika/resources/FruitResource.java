@@ -4,14 +4,7 @@ import com.hendisantika.entity.Fruit;
 import io.smallrye.mutiny.Uni;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -42,14 +35,6 @@ public class FruitResource {
 
     @GET
     @Path("/{id}")
-//    public Fruit get(@PathParam Integer id) {
-//        Fruit f = Fruit.findById(id);
-//        if (f != null) {
-//            return f;
-//        } else {
-//            throw new NotFoundException("Unknown fruit id : " + id);
-//        }
-//    }
     public Uni<Response> getSingleFruit(@PathParam("id") Long id) {
         return Fruit.findByFruitId(id)
                 .onItem().ifNotNull().transform(product -> Response.ok(product).build())
@@ -58,11 +43,6 @@ public class FruitResource {
 
     @POST
     @Transactional
-//    public Collection<Fruit> add(Fruit fruit) {
-//        fruit.id = null; //ignore id
-//        Fruit.persist(fruit);
-//        return Fruit.listAll();
-//    }
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Uni<Response> add(Fruit fruit) {
@@ -72,19 +52,9 @@ public class FruitResource {
                 .onItem().transform(Response.ResponseBuilder::build);
     }
 
+    @PUT
     @Path("{id}")
     @Transactional
-//    public Fruit update(Fruit fruit) {
-//        Fruit fruitUpdated = Fruit.findById(fruit.id);
-//        if (fruitUpdated != null) {
-//            fruitUpdated.name = fruit.name;
-//            fruitUpdated.description = fruit.description;
-//            Fruit.persist(fruitUpdated);
-//            return fruitUpdated;
-//        } else {
-//            throw new NotFoundException("Unknown fruit id : " + fruit.id);
-//        }
-//    }
     public Uni<Response> update(@PathParam("id") Long id, Fruit fruit) {
         if (fruit == null || fruit.description == null) {
             throw new WebApplicationException("Product description was not set on request.", 422);
@@ -97,14 +67,6 @@ public class FruitResource {
     @DELETE
     @Path("{id}")
     @Transactional
-//    public void delete(Fruit fruit) {
-//        Fruit f = Fruit.findById(fruit.id);
-//        if (f != null) {
-//            Fruit.deleteById(fruit.id);
-//        } else {
-//            throw new NotFoundException("Unknown fruit id : " + fruit.id);
-//        }
-//    }
     public Uni<Response> delete(@PathParam("id") Long id) {
         return Fruit.deleteFruit(id)
                 .onItem().transform(entity -> !entity ? Response.serverError().status(NOT_FOUND).build()
